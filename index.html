@@ -18,7 +18,10 @@
     
   </head>
   <body>
+    <!-- Message list -->
     <ul id="messages"></ul>
+
+    <!-- Chat form -->
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
@@ -26,25 +29,27 @@
     <!-- Script for socket io -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io();
+        const socket = io();  // Connect to server via Socket.io
 
         const form = document.getElementById('form');
         const input = document.getElementById('input');
         const messages = document.getElementById('messages');
 
+        // Handle form submission (sending a message)
         form.addEventListener('submit', (e) => {
-            e.preventDefault();
+            e.preventDefault();   // Prevent page reload
             if (input.value) {
-                socket.emit('chat message', input.value);
+                socket.emit('chat message', input.value);   // Send message to server
                 input.value = '';
             }
         });
 
+        // Receive chat messages from server
         socket.on('chat message', (msg) => {
-            const item = document.createElement('li');
+            const item = document.createElement('li');  // Create new list item (a line of message)
             item.textContent = msg;
-            messages.appendChild(item);
-            window.scrollTo(0, document.body.scrollHeight);
+            messages.appendChild(item);   // Add message to list
+            window.scrollTo(0, document.body.scrollHeight);   // Auto-scroll to bottom
         })
     </script>
   </body>
